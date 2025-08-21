@@ -911,7 +911,7 @@ ol {
 -----------------------*/
 
 .product {
-  padding-top: 0;
+  padding-top: 70px;
   padding-bottom: 60px;
 }
 
@@ -922,7 +922,7 @@ ol {
 
 .filter__controls li {
   color: #b7b7b7;
-  font-size: 24px;
+  font-size: 32px;
   font-weight: 700;
   list-style: none;
   display: inline-block;

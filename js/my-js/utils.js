@@ -34,6 +34,6 @@ function getCart() {
   return JSON.parse(localStorage.getItem('cart')) || [];
 }
 
-function addToCart(productId, quantity = 1) {
-  // Logic thêm vào giỏ hàng
+function formatPrice(price) {
+  return price.toLocaleString('vi-VN') + 'đ';
 }
