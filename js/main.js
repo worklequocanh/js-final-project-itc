@@ -13,10 +13,10 @@
     /*------------------
         Background Set
     --------------------*/
-    $('.set-bg').each(function () {
-        var bg = $(this).data('setbg');
-        $(this).css('background-image', 'url(' + bg + ')');
-    });
+    // $('.set-bg').each(function () {
+    //     var bg = $(this).data('setbg');
+    //     $(this).css('background-image', 'url(' + bg + ')');
+    // });
 
     //Search Switch
     $('.search-switch').on('click', function () {
@@ -84,10 +84,10 @@
     /*-------------------
         Radio Btn
     --------------------- */
-    $(".product__color__select label, .shop__sidebar__size label, .product__details__option__size label").on('click', function () {
-        $(".product__color__select label, .shop__sidebar__size label, .product__details__option__size label").removeClass('active');
-        $(this).addClass('active');
-    });
+    // $(".product__color__select label, .shop__sidebar__size label, .product__details__option__size label").on('click', function () {
+    //     $(".product__color__select label, .shop__sidebar__size label, .product__details__option__size label").removeClass('active');
+    //     $(this).addClass('active');
+    // });
 
     /*-------------------
         Scroll
