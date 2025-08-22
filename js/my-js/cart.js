@@ -27,6 +27,7 @@ function addToCart(product, size, color, qty) {
     cart.push({
       id: product.id,
       name: product.name,
+      avatar: product.images[0],
       price: Number(product.price),
       size: size || null,
       color: color || null,
@@ -92,4 +93,64 @@ function renderCartInfo() {
   $('.header__nav__option .price').text(formatPrice(getCartTotal()));
 }
 
+function renderCart() {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let $tbody = $("#cart-table tbody");
+  $tbody.empty();
+
+  let grandTotal = 0;
+
+  cart.forEach((item, index) => {
+    let lineTotal = Number(item.price) * Number(item.qty);
+    grandTotal += lineTotal;
+
+    let row = `
+      <tr id="row-${item.id}">
+        <td class="product__cart__item">
+          <div class="product__cart__item__pic">
+            <img class="w-90" src="img/product/${item.avatar}" alt="" />
+          </div>
+          <div class="product__cart__item__text">
+            <h6>Diagonal Textured Cap</h6>
+            <h5>${formatPrice(item.price)}</h5>
+          </div>
+        </td>
+        <td class="quantity__item">
+          <div class="quantity">
+            <div class="pro-qty-2">
+              <input type="text" value="${item.qty}" />
+            </div>
+          </div>
+        </td>
+        <td class="cart__price">${formatPrice(lineTotal)}</td>
+        <td class="cart__close"><i class="fa fa-close"></i></td>
+      </tr>
+    `;
+
+    $tbody.append(row);
+  });
+
+  $("#cart-total").text("Tổng cộng: " + grandTotal.toLocaleString() + " đ");
+}
+
+// clearCart();
 renderCartInfo();
+renderCart();
+
+var proQty = $('.pro-qty-2');
+proQty.prepend('<span class="fa fa-angle-left dec qtybtn"></span>');
+proQty.append('<span class="fa fa-angle-right inc qtybtn"></span>');
+proQty.on('click', '.qtybtn', function () {
+  var $button = $(this);
+  var oldValue = $button.parent().find('input').val();
+  if ($button.hasClass('inc')) {
+    var newVal = parseFloat(oldValue) + 1;
+  } else {
+    if (oldValue > 0) {
+      var newVal = parseFloat(oldValue) - 1;
+    } else {
+      newVal = 0;
+    }
+  }
+  $button.parent().find('input').val(newVal);
+});
