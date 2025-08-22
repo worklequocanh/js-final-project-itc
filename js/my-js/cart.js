@@ -43,13 +43,21 @@ function addToCart(product, size, color, qty) {
 function updateQty(productId, size, color, newQty) {
   let cart = getCart();
   let index = cart.findIndex(
-    (item) => item.id === productId && item.size === size && item.color === color
+    (item) => item.id === productId &&
+      item.size === size &&
+      item.color === color
   );
 
   if (index !== -1) {
+    console.log("Before update:", typeof cart[index].id);
     cart[index].qty = newQty > 0 ? newQty : 1;
     saveCart(cart);
   }
+  else {
+    console.warn("Product not found in cart for update:", productId, size, color);
+  }
+  console.log("Updated cart:", cart);
+  renderCartInfo();
 }
 
 function removeFromCart(productId, size, color) {
@@ -105,13 +113,13 @@ function renderCart() {
     grandTotal += lineTotal;
 
     let row = `
-      <tr id="row-${item.id}">
+      <tr id="row-${item.id}" data-size="${item.size || ''}" data-color="${item.color || ''}">
         <td class="product__cart__item">
           <div class="product__cart__item__pic">
             <img class="w-90" src="img/product/${item.avatar}" alt="" />
           </div>
           <div class="product__cart__item__text">
-            <h6>Diagonal Textured Cap</h6>
+            <h6>${item.name}</h6>
             <h5>${formatPrice(item.price)}</h5>
           </div>
         </td>
@@ -131,26 +139,78 @@ function renderCart() {
   });
 
   $("#cart-total").text("Tổng cộng: " + grandTotal.toLocaleString() + " đ");
+
+  $(".cart__total li span").text(
+    grandTotal.toLocaleString("vi-VN") + "đ"
+  );
 }
 
 // clearCart();
 renderCartInfo();
 renderCart();
 
+// Update qty in cart page
 var proQty = $('.pro-qty-2');
 proQty.prepend('<span class="fa fa-angle-left dec qtybtn"></span>');
 proQty.append('<span class="fa fa-angle-right inc qtybtn"></span>');
 proQty.on('click', '.qtybtn', function () {
   var $button = $(this);
   var oldValue = $button.parent().find('input').val();
+  let newVal = oldValue;
+
+  const $row = $button.closest('tr');
+  const rowId = $row.attr("id");
+  const productId = Number(rowId.split("-")[1]);
+
+  const size = $row.data("size");
+  const color = $row.data("color");
+
   if ($button.hasClass('inc')) {
-    var newVal = parseFloat(oldValue) + 1;
+    newVal = parseFloat(oldValue) + 1;
   } else {
-    if (oldValue > 0) {
-      var newVal = parseFloat(oldValue) - 1;
+    if (oldValue > 1) {
+      newVal = parseFloat(oldValue) - 1;
     } else {
-      newVal = 0;
+      if (confirm("Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng không?")) {
+        newVal = 0;
+        removeFromCart(productId, size, color);
+        $row.remove();
+      }
     }
   }
+
+  // lấy giá gốc từ text
+  let priceText = $row.find(".product__cart__item__text h5")
+    .text()
+    .replace("đ", "")
+    .replace(/\./g, "");
+  let price = parseInt(priceText, 10);
+
+  // tính lại tổng
+  let total = price * newVal;
+  $row.find(".cart__price").text(total.toLocaleString("vi-VN") + "đ");
+
+  // cập nhật localStorage
+  updateQty(productId, size, color, newVal);
+
   $button.parent().find('input').val(newVal);
+});
+
+// Remove item from cart
+$(document).on("click", ".cart__close i", function () {
+  const $row = $(this).closest("tr");
+  const productId = Number($row.attr("id").split("-")[1]);
+  const size = $row.data("size");
+  const color = $row.data("color");
+
+  if (confirm("Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng không?")) {
+    removeFromCart(productId, size, color);
+    $row.remove();
+  }
+});
+
+$(document).on("click", ".update__btn i", (e) => {
+  e.prependtDefault();
+  console.log("Button clicked!");
+  renderCart();
 });
