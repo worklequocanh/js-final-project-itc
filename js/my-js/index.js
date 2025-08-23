@@ -35,7 +35,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="product-detail.html?id=${product.id}" class="quick-view" data-id="${product.id}">
+                                <a href="product-detail.html?id=${product.id}" class="quick-view">
                                     <img src="img/icon/search.png" alt="" />
                                 </a>
                             </li>
