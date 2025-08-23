@@ -1,8 +1,8 @@
 'use strict';
 
 (function ($) {
-    let { set } = getWishlist();
-    console.log('Wishlist:', set);
+    let wishlist = getWishlist();
+    console.log('Wishlist:', wishlist);
 
     loadFeaturedProducts();
 
@@ -31,7 +31,7 @@
                         <ul class="product__hover">
                             <li>
                                 <a href="#" class="add-wishlist" data-id="${product.id}">
-                                    <img src="img/icon/heart.png" alt="" />
+                                    <img src="img/icon/${wishlist.has(product.id) ? 'heart-red' : 'heart'}.png" alt="wishlist" />
                                 </a>
                             </li>
                             <li>
@@ -72,6 +72,7 @@
     } else {
       img.attr("src", "img/icon/heart.png");
     }
+    console.log('Wishlist: ', getWishlist());
   });
 
 })(jQuery);
