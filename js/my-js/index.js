@@ -60,4 +60,18 @@
         $(this).css('background-image', 'url(' + bg + ')');
     });
 
+    $(document).on("click", ".product__hover a[data-id]", function (e) {
+    e.preventDefault();
+
+    let productId = $(this).data("id");
+    let added = toggleWishlist(productId);
+
+    let img = $(this).find("img");
+    if (added) {
+      img.attr("src", "img/icon/heart-red.png");
+    } else {
+      img.attr("src", "img/icon/heart.png");
+    }
+  });
+
 })(jQuery);
