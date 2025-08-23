@@ -18,6 +18,8 @@ $('#send-message').on('click', function (e) {
   console.log("Contacts list:", getContacts());
   alert(`Cảm ơn ${name} đã gửi thông tin liên hệ!`);
 
-  // Reset form
-  $('#contact-form').reset();
+  // reset form
+  $("form").each(function () {
+    this.reset();
+  });
 });
