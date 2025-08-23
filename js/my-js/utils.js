@@ -155,6 +155,11 @@ function toggleWishlist(productId) {
   }
 }
 
+// Get orders
+function getOrders() {
+  return JSON.parse(localStorage.getItem("orders")) || [];
+}
+
 // Lưu orders
 function saveOrders(orders) {
   localStorage.setItem("orders", JSON.stringify(orders));

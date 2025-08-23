@@ -1,4 +1,5 @@
-console.log(getCart());
+console.log('Cart: ', getCart());
+console.log('Orders: ', getOrders());
 
 const modalOrder = new bootstrap.Modal(document.getElementById('modalOrder'));
 
